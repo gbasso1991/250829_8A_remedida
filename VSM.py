@@ -49,7 +49,6 @@ def coercive_field(H, M):
     hc_unc = abs(abs(hc_values[0]) - abs(hc_values[1]))
     return ufloat(hc_mean, hc_unc)
 #%% Levanto Archivos
-
 data_8A_new = np.loadtxt('8A_250827.txt', skiprows=12)
 data_8A_old = np.loadtxt('8A_250609.txt', skiprows=12)
 
@@ -70,8 +69,8 @@ for a in [ax]:
     a.grid()
     a.set_ylabel('m (emu)')
 plt.xlabel('H (G)')
-plt.savefig('8A_old_new_ra.png', dpi=300)
-plt.show()
+
+plt.savefig('8A_old_new_raw.png', dpi=400)
 
 
 #%% Fitting
@@ -126,8 +125,8 @@ pars_2 = fit2.derived_parameters()
 for key, val in pars.items():
     unit = fit3.session.units.get(key, '')
     print(f"{key:15s} = {val} {unit}")
-H_fit_2 = fit.X
-m_fit_2 = fit.Yfit  # resultado del ajuste
+H_fit_2 = fit2.X
+m_fit_2 = fit2.Yfit  # resultado del ajuste
 m_fit_sin_diamag_2 = m_fit_2 - H_fit_2*fit2.params['C'].value - fit2.params['dc'].value
 ms_2 = pars_2['m_s']
 mu_mu_2 = pars_2['<mu>_mu']
@@ -141,10 +140,11 @@ ajuste_text_2 = ms_str_2 + "\n" + mu_mu_str_2  # + hc_str
 #%% Crear figura
 plt.figure(figsize=(6,4), constrained_layout=True)
 
-plt.plot(H_8A_old, m_8A_old/masa_8A_FF, '.-', label=f'8A FF old', alpha=0.7)
+plt.plot(H_8A_old, m_8A_old/masa_8A_FF, '.-', label=f'8A FF old', alpha=0.5)
 plt.plot(H_fit, m_fit, '-', label=f'8A FF old fit', linewidth=2)
 
-plt.plot(H_8A_new, m_8A_new/masa_8A_FF, '.-', label=f'8A FF new', alpha=0.7)
+plt.plot(H_8A_new, m_8A_new/masa_8A_FF, '.-', label=f'8A FF new', alpha=0.5)
+
 plt.plot(H_fit_2, m_fit_2, '-', label=f'8A FF new fit2', linewidth=2)
 
 plt.xlabel('H (G)')
@@ -163,7 +163,7 @@ plt.gca().text(
     bbox=dict(boxstyle='round', facecolor='tab:red', alpha=0.7))
 
 
-plt.savefig(f'8A_FF_comparativa_old_new.png', dpi=300)
+plt.savefig(f'8A_FF_comparativa_old_new.png', dpi=400)
 plt.show()
 
 
